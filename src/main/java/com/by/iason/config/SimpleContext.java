@@ -1,13 +1,9 @@
 package com.by.iason.config;
 
-import com.google.common.base.Predicate;
+import com.by.iason.model.entity.Node;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-
 import org.springframework.security.core.context.SecurityContext;
 
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by iason
@@ -16,9 +12,9 @@ import java.util.List;
 public class SimpleContext implements SecurityContext {
 
     private String address;
-    private String node;
+    private Node node;
 
-    public SimpleContext(String address, String node) {
+    public SimpleContext(String address, Node node) {
         this.address = address;
         this.node = node;
     }
@@ -31,11 +27,11 @@ public class SimpleContext implements SecurityContext {
         this.address = address;
     }
 
-    public String getNode() {
+    public Node getNode() {
         return node;
     }
 
-    public void setNode(String node) {
+    public void setNode(Node node) {
         this.node = node;
     }
 

@@ -1,5 +1,6 @@
 package com.by.iason.config;
 
+import com.by.iason.model.entity.Node;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -72,5 +73,14 @@ public class BlockChain {
 
     public static void setRpcPwd(String rpcPwd) {
         BlockChain.rpcPwd = rpcPwd;
+    }
+
+    public static Node defaultNode() {
+        Node node =  new Node();
+        node.setRpcHost(rpcHost());
+        node.setRpcPort(rpcPort());
+        node.setRpcUser(rpcUser());
+        node.setRpcPwd(rpcPwd());
+        return node;
     }
 }

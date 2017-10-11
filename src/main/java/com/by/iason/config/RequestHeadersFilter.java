@@ -1,14 +1,13 @@
 package com.by.iason.config;
 
+import com.by.iason.model.entity.Node;
+import com.by.iason.service.MedChainManager;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,15 +20,20 @@ import java.io.IOException;
 @Component
 public class RequestHeadersFilter extends OncePerRequestFilter {
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        getInfo(httpServletRequest);
+        try {
+            getInfo(httpServletRequest);
+        } catch (Exception ex) {
+            throw new ServletException();
+        }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
-    private void getInfo(HttpServletRequest request) {
+    private void getInfo(HttpServletRequest request) throws Exception {
         String address = request.getHeader("Address");
-        String node = request.getHeader("Node");
+        Node node = new MedChainManager(BlockChain.defaultNode()).getNode(address);
 
         SecurityContextHolder.setContext(new SimpleContext(address, node));
     }
