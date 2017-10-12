@@ -20,7 +20,6 @@ import java.io.IOException;
 @Component
 public class RequestHeadersFilter extends OncePerRequestFilter {
 
-
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         try {
@@ -32,9 +31,16 @@ public class RequestHeadersFilter extends OncePerRequestFilter {
     }
 
     private void getInfo(HttpServletRequest request) throws Exception {
-        String address = request.getHeader("Address");
-        Node node = new MedChainManager(BlockChain.defaultNode()).getNode(address);
+        MedChainManager manager = new MedChainManager(BlockChain.defaultNode());
+        try {
+            String address = request.getHeader("Address");
 
-        SecurityContextHolder.setContext(new SimpleContext(address, node));
+            Node node = manager.getNode(address);
+            manager.kill();
+
+            SecurityContextHolder.setContext(new SimpleContext(address, node));
+        } finally {
+            manager.kill();
+        }
     }
 }

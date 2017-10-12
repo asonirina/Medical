@@ -3,7 +3,6 @@ package com.by.iason.controller;
 import com.by.iason.exception.AddressNotFoundException;
 import com.by.iason.exception.ClinicNotFoundException;
 import com.by.iason.model.request.CreateAdminRequest;
-import com.by.iason.model.request.CreateClinicRequest;
 import com.by.iason.model.response.AbstractResponse;
 import com.by.iason.model.response.ErrorResponse;
 import com.by.iason.service.MinistryAdminService;
@@ -40,7 +39,7 @@ public class MinistryAdminController {
             ministryAdminService.approveClinic(id);
             return new ResponseEntity(HttpStatus.OK);
         } catch (MultichainException | ClinicNotFoundException ex) {
-            return new ResponseEntity<>("Something went wrong...", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ErrorResponse("Something went wrong...", HttpStatus.INTERNAL_SERVER_ERROR.value()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -62,7 +61,7 @@ public class MinistryAdminController {
     public ResponseEntity<AbstractResponse> registerNode(@RequestBody CreateAdminRequest request) {
         try {
             return new ResponseEntity<>(ministryAdminService.registerAdmin(request), HttpStatus.OK);
-        } catch (MultichainException | AddressNotFoundException ex) {
+        } catch (MultichainException | AddressNotFoundException |JsonProcessingException ex) {
             return new ResponseEntity<>(new ErrorResponse("Something went wrong...", 500), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

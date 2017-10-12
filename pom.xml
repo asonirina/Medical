@@ -116,7 +116,8 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<addResources>false</addResources>
+					<mainClass>com.by.iason.Application</mainClass>
+					<!--<addResources>false</addResources>-->
 				</configuration>
 			</plugin>
 		</plugins>

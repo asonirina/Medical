@@ -1,10 +1,8 @@
 package com.by.iason.controller;
 
 import com.by.iason.exception.AddressNotFoundException;
-import com.by.iason.model.entity.Clinic;
 import com.by.iason.model.request.CreateClinicRequest;
 import com.by.iason.model.request.CreateDoctorRequest;
-import com.by.iason.model.entity.Node;
 import com.by.iason.model.request.CreatePatientRequest;
 import com.by.iason.model.response.AbstractResponse;
 import com.by.iason.model.response.ErrorResponse;
@@ -18,7 +16,10 @@ import multichain.command.MultichainException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by iason
@@ -60,9 +61,6 @@ public class DoctorAdminController {
     }
 
     @ApiOperation(value = "Register new clinic node", notes = "Register new clinic node")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Address", required = true, dataType = "string", paramType = "header")
-    })
     @RequestMapping(value = "nodes", method = RequestMethod.POST)
     public ResponseEntity<AbstractResponse> registerNode(@RequestBody CreateClinicRequest request) {
         try {

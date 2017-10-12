@@ -7,15 +7,17 @@ import com.by.iason.exception.ClinicNotFoundException;
 import com.by.iason.model.Permissions;
 import com.by.iason.model.entity.Admin;
 import com.by.iason.model.entity.Clinic;
-import com.by.iason.model.entity.Patient;
 import com.by.iason.model.request.CreateAdminRequest;
 import com.by.iason.model.response.AdminResponse;
 import com.by.iason.model.response.ClinicResponse;
-import com.by.iason.model.response.PatientResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import multichain.command.MultichainException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+import static com.by.iason.model.Streams.*;
 
 /**
  * Created by iason
@@ -24,33 +26,54 @@ import org.springframework.stereotype.Component;
 @Component
 public class MinistryAdminService {
 
-    public void approveClinic(String clinicId) throws MultichainException, ClinicNotFoundException{
+    public void approveClinic(String clinicId) throws MultichainException, ClinicNotFoundException {
         MedChainManager manager = new MedChainManager(Utils.context().getNode());
-        if(!manager.isClinicExists(clinicId)) {
-            throw new ClinicNotFoundException();
+        try {
+
+            if (!manager.isClinicExists(clinicId)) {
+                throw new ClinicNotFoundException();
+            }
+            manager.grantPermissions(clinicId, Permissions.DOCTOR_ADMIN);
+        } finally {
+            manager.kill();
         }
-        manager.grantPermissions(clinicId, Permissions.DOCTOR_ADMIN);
     }
 
     public ClinicResponse getClinics() throws MultichainException {
         MedChainManager manager = new MedChainManager(Utils.context().getNode());
-        return new ClinicResponse(manager.getClinics());
+        try {
+            List<Clinic> clinics = manager.getClinics();
+
+            return new ClinicResponse(clinics);
+        } finally {
+            manager.kill();
+        }
     }
 
-    public AdminResponse registerAdmin(CreateAdminRequest request) throws MultichainException, AddressNotFoundException {
+    public AdminResponse registerAdmin(CreateAdminRequest request) throws MultichainException, AddressNotFoundException, JsonProcessingException {
 
-        MedChainManager manager = new MedChainManager(BlockChain.defaultNode());
+        MedChainManager adminManager = new MedChainManager(request.getNode());
+        MedChainManager defaultManager = new MedChainManager(BlockChain.defaultNode());
+        try {
+            adminManager.subscribeTo(NODES, ADDRESSES, CLINICS, DOCTORS, PATIENTS, ADMINS);
+            String address = adminManager.newAddress();
 
-        String address = manager.newAddress();
-        manager.grantPermissions(address, Permissions.MINISTRY_ADMIN);
 
-        Admin admin  = request.getData();
-        admin.setId(address);
-        manager.addAdmin(admin);
+            defaultManager.grantPermissions(address, Permissions.MINISTRY_ADMIN);
 
-        String nodeId = "default_node";
-        manager.addAddress(address, nodeId);
+            Admin admin = request.getData();
+            admin.setId(address);
+            defaultManager.addAdmin(admin);
 
-        return new AdminResponse(Lists.newArrayList(admin));
+            String nodeId = defaultManager.addNode(request.getNode());
+            defaultManager.addAddress(address, nodeId);
+
+
+            return new AdminResponse(Lists.newArrayList(admin));
+        } finally {
+
+            adminManager.kill();
+            defaultManager.kill();
+        }
     }
 }
