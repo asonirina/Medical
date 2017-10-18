@@ -32,9 +32,10 @@ public class DoctorAdminService {
 
     public DoctorResponse createDoctor(CreateDoctorRequest request, String pwd) throws Exception {
         MedChainManager manager = new MedChainManager(Utils.context().getNode());
+        MedChainManager defaultManager = new MedChainManager(BlockChain.defaultNode());
 
         try {
-            String address = AddressGenerator.generate(manager, pwd);
+            String address = AddressGenerator.generate(defaultManager, manager, pwd);
             manager.grantPermissions(address, Permissions.DOCTOR);
             Doctor doctor = request.getData();
             doctor.setId(address);
@@ -46,13 +47,15 @@ public class DoctorAdminService {
             return new DoctorResponse(Lists.newArrayList(doctor));
         } finally {
             manager.kill();
+            defaultManager.kill();
         }
     }
 
     public PatientResponse createPatient(CreatePatientRequest request, String pwd) throws Exception {
         MedChainManager manager = new MedChainManager(Utils.context().getNode());
+        MedChainManager defaultManager = new MedChainManager(BlockChain.defaultNode());
         try {
-            String address = AddressGenerator.generate(manager, pwd);
+            String address = AddressGenerator.generate(defaultManager, manager, pwd);
             manager.grantPermissions(address, Permissions.PATIENT);
 
             String streamName = manager.createPatientStream(address);
@@ -68,6 +71,7 @@ public class DoctorAdminService {
             return new PatientResponse(Lists.newArrayList(patient));
         } finally {
             manager.kill();
+            defaultManager.kill();
         }
     }
 
@@ -79,7 +83,7 @@ public class DoctorAdminService {
 
             String nodeId = defaultManager.addNode(request.getNode());
 
-            String address = AddressGenerator.generate(clinicManager, pwd);
+            String address = AddressGenerator.generate(defaultManager, clinicManager, pwd);
             defaultManager.addAddress(address, nodeId);
             Clinic clinic = request.getData();
             clinic.setId(address);

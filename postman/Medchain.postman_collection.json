@@ -36,7 +36,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Cool Admin\"\r\n  },\r\n  \"node\": {\r\n    \"rpcHost\": \"192.168.13.92\",\r\n    \"rpcPort\": \"1111\",\r\n    \"rpcPwd\": \"root\",\r\n    \"rpcUser\": \"multichainrpc\"\r\n  }\r\n}"
+					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Cool Admin\"\r\n  },\r\n  \"node\": {\r\n    \"rpcHost\": \"91.204.13.9\",\r\n    \"rpcPort\": \"1111\",\r\n    \"rpcPwd\": \"root\",\r\n    \"rpcUser\": \"multichainrpc\"\r\n  }\r\n}"
 				},
 				"description": ""
 			},

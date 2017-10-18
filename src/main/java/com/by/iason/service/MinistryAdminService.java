@@ -54,7 +54,7 @@ public class MinistryAdminService {
         MedChainManager defaultManager = new MedChainManager(BlockChain.defaultNode());
         try {
             adminManager.subscribeTo(NODES, ADDRESSES, CLINICS, DOCTORS, PATIENTS, ADMINS, PRIVATE_KEYS, PUBLIC_KEYS, ACCESS);
-            String address = AddressGenerator.generate(adminManager, pwd);
+            String address = AddressGenerator.generate(defaultManager, adminManager, pwd);
 
             defaultManager.grantPermissions(address, Permissions.MINISTRY_ADMIN);
 
