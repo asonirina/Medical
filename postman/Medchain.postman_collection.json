@@ -1,0 +1,428 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Medchain",
+		"_postman_id": "ef1455ea-cbc7-329c-f76f-56e84ca0519a",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create New Ministry Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var pwd = postman.getResponseHeader('Password');",
+							"postman.setGlobalVariable('minAdminPwd', pwd);",
+							"",
+							"var data = JSON.parse(responseBody);",
+							"postman.setGlobalVariable('minAdminID', data.data[0].id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{host}}/v1/ministry/admin/addresses",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Cool Admin\"\r\n  },\r\n  \"node\": {\r\n    \"rpcHost\": \"192.168.13.92\",\r\n    \"rpcPort\": \"1111\",\r\n    \"rpcPwd\": \"root\",\r\n    \"rpcUser\": \"multichainrpc\"\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Doctor Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var pwd = postman.getResponseHeader('Password');",
+							"postman.setGlobalVariable('docAdminPwd', pwd);",
+							"",
+							"var data = JSON.parse(responseBody);",
+							"postman.setGlobalVariable('docAdminID', data.data[0].id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{host}}/v1/doctor/admin/nodes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Cool Doctor Admin\"\r\n  },\r\n  \"node\": {\r\n    \"rpcHost\": \"192.168.13.92\",\r\n    \"rpcPort\": \"2221\",\r\n    \"rpcPwd\": \"root\",\r\n    \"rpcUser\": \"multichainrpc\"\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Approve Doctor Admin",
+			"request": {
+				"url": {
+					"raw": "{{host}}/v1/ministry/admin/clinics?id={{docAdminID}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"ministry",
+						"admin",
+						"clinics"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{docAdminID}}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Address",
+						"value": "{{minAdminID}}",
+						"description": ""
+					},
+					{
+						"key": "Password",
+						"value": "{{minAdminPwd}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clinics List",
+			"request": {
+				"url": "{{host}}/v1/ministry/admin/clinics",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Address",
+						"value": "{{minAdminID}}",
+						"description": ""
+					},
+					{
+						"key": "Password",
+						"value": "{{minAdminPwd}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Doctor Admin create a doctor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var pwd = postman.getResponseHeader('Password');",
+							"postman.setGlobalVariable('docPwd', pwd);",
+							"",
+							"var data = JSON.parse(responseBody);",
+							"postman.setGlobalVariable('docID', data.data[0].id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{host}}/v1/doctor/admin/doctors",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Address",
+						"value": "{{docAdminID}}",
+						"description": ""
+					},
+					{
+						"key": "Password",
+						"value": "{{docAdminPwd}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Doctor\"\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Doctor Admin create a patient",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var pwd = postman.getResponseHeader('Password');",
+							"postman.setGlobalVariable('patPwd', pwd);",
+							"",
+							"var data = JSON.parse(responseBody);",
+							"postman.setGlobalVariable('patID', data.data[0].id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{host}}/v1/doctor/admin/patients",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Address",
+						"value": "{{docAdminID}}",
+						"description": ""
+					},
+					{
+						"key": "Password",
+						"value": "{{docAdminPwd}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Patient\"\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Doctor Admin assigns doctor to a patient",
+			"request": {
+				"url": {
+					"raw": "{{host}}/v1/doctor/admin/doctor?doctorID={{docID}}&patientID={{patID}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"doctor",
+						"admin",
+						"doctor"
+					],
+					"query": [
+						{
+							"key": "doctorID",
+							"value": "{{docID}}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "patientID",
+							"value": "{{patID}}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Address",
+						"value": "{{docAdminID}}",
+						"description": ""
+					},
+					{
+						"key": "Password",
+						"value": "{{docAdminPwd}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Doctor publishes patient's data",
+			"request": {
+				"url": {
+					"raw": "{{host}}/v1/doctor/documents?patientID={{patID}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"v1",
+						"doctor",
+						"documents"
+					],
+					"query": [
+						{
+							"key": "patientID",
+							"value": "{{patID}}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Address",
+						"value": "{{docID}}",
+						"description": ""
+					},
+					{
+						"key": "Password",
+						"value": "{{docPwd}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": {\r\n    \"data\": \"Secret Data 12345\"\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Patient's data list",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"postman.setGlobalVariable('documentID', data.data[0].id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{host}}/v1/patient/documents",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Address",
+						"value": "{{patID}}",
+						"description": ""
+					},
+					{
+						"key": "Password",
+						"value": "{{patPwd}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Patient read document",
+			"request": {
+				"url": "{{host}}/v1/patient/documents/{{documentID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Address",
+						"value": "{{patID}}",
+						"description": ""
+					},
+					{
+						"key": "Password",
+						"value": "{{patPwd}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
