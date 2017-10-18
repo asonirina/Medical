@@ -11,4 +11,7 @@ public interface Streams {
     String DOCTORS = "doctors";
     String CLINICS = "clinics";
     String ADMINS = "admins";
+    String PUBLIC_KEYS = "public_keys";
+    String PRIVATE_KEYS = "private_keys";
+    String ACCESS = "access";
 }

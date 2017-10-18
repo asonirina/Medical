@@ -2,7 +2,6 @@ package com.by.iason.service;
 
 import com.by.iason.Utils;
 import com.by.iason.config.BlockChain;
-import com.by.iason.exception.AddressNotFoundException;
 import com.by.iason.exception.ClinicNotFoundException;
 import com.by.iason.model.Permissions;
 import com.by.iason.model.entity.Admin;
@@ -10,7 +9,6 @@ import com.by.iason.model.entity.Clinic;
 import com.by.iason.model.request.CreateAdminRequest;
 import com.by.iason.model.response.AdminResponse;
 import com.by.iason.model.response.ClinicResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import multichain.command.MultichainException;
 import org.springframework.stereotype.Component;
@@ -50,14 +48,13 @@ public class MinistryAdminService {
         }
     }
 
-    public AdminResponse registerAdmin(CreateAdminRequest request) throws MultichainException, AddressNotFoundException, JsonProcessingException {
+    public AdminResponse registerAdmin(CreateAdminRequest request, String pwd) throws Exception {
 
         MedChainManager adminManager = new MedChainManager(request.getNode());
         MedChainManager defaultManager = new MedChainManager(BlockChain.defaultNode());
         try {
-            adminManager.subscribeTo(NODES, ADDRESSES, CLINICS, DOCTORS, PATIENTS, ADMINS);
-            String address = adminManager.newAddress();
-
+            adminManager.subscribeTo(NODES, ADDRESSES, CLINICS, DOCTORS, PATIENTS, ADMINS, PRIVATE_KEYS, PUBLIC_KEYS, ACCESS);
+            String address = AddressGenerator.generate(adminManager, pwd);
 
             defaultManager.grantPermissions(address, Permissions.MINISTRY_ADMIN);
 
@@ -67,7 +64,6 @@ public class MinistryAdminService {
 
             String nodeId = defaultManager.addNode(request.getNode());
             defaultManager.addAddress(address, nodeId);
-
 
             return new AdminResponse(Lists.newArrayList(admin));
         } finally {

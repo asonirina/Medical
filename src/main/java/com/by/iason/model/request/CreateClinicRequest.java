@@ -7,7 +7,7 @@ import com.by.iason.model.entity.Node;
  * Created by iason
  * on 10/6/2017.
  */
-public class CreateClinicRequest extends AbstractRequest<Clinic> {
+public class CreateClinicRequest extends AbstractNodeRequest<Clinic> {
 
     public CreateClinicRequest() {
         super(null, null);

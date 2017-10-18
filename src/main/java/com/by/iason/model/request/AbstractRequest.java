@@ -1,9 +1,5 @@
 package com.by.iason.model.request;
 
-import com.by.iason.model.entity.Node;
-
-import java.util.List;
-
 /**
  * Created by iason
  * on 10/6/2017.
@@ -11,11 +7,9 @@ import java.util.List;
 public abstract class AbstractRequest<T> {
     private T data;
 
-    private Node node;
 
-    public AbstractRequest(T data, Node node) {
+    public AbstractRequest(T data) {
         this.data = data;
-        this.node = node;
     }
 
     public T getData() {
@@ -26,12 +20,4 @@ public abstract class AbstractRequest<T> {
         this.data = data;
     }
 
-
-    public Node getNode() {
-        return node;
-    }
-
-    public void setNode(Node node) {
-        this.node = node;
-    }
 }

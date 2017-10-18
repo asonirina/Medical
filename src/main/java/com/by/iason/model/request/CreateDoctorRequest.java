@@ -9,10 +9,10 @@ import com.by.iason.model.entity.Doctor;
 public class CreateDoctorRequest extends AbstractRequest<Doctor> {
 
     public CreateDoctorRequest () {
-        super(null, null);
+        super(null);
     }
 
     public CreateDoctorRequest(Doctor data) {
-        super(data, null);
+        super(data);
     }
 }
