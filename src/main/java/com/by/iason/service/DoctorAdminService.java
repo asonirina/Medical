@@ -13,9 +13,9 @@ import com.by.iason.model.request.CreatePatientRequest;
 import com.by.iason.model.response.ClinicResponse;
 import com.by.iason.model.response.DoctorResponse;
 import com.by.iason.model.response.PatientResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import multichain.command.MultichainException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -30,13 +30,15 @@ import static com.by.iason.model.Streams.*;
 @Component
 public class DoctorAdminService {
 
+    @Autowired
+    private AddressGenerator addressGenerator;
+
     public DoctorResponse createDoctor(CreateDoctorRequest request, String pwd) throws Exception {
         MedChainManager manager = new MedChainManager(Utils.context().getNode());
         MedChainManager defaultManager = new MedChainManager(BlockChain.defaultNode());
 
         try {
-            String address = AddressGenerator.generate(defaultManager, manager, pwd);
-            manager.grantPermissions(address, Permissions.DOCTOR);
+            String address = addressGenerator.generate(defaultManager, manager, pwd, Permissions.DOCTOR);
             Doctor doctor = request.getData();
             doctor.setId(address);
             manager.addDoctor(doctor);
@@ -55,8 +57,7 @@ public class DoctorAdminService {
         MedChainManager manager = new MedChainManager(Utils.context().getNode());
         MedChainManager defaultManager = new MedChainManager(BlockChain.defaultNode());
         try {
-            String address = AddressGenerator.generate(defaultManager, manager, pwd);
-            manager.grantPermissions(address, Permissions.PATIENT);
+            String address = addressGenerator.generate(defaultManager, manager, pwd, Permissions.PATIENT);
 
             String streamName = manager.createPatientStream(address);
             manager.subscribeTo(streamName);
@@ -83,7 +84,7 @@ public class DoctorAdminService {
 
             String nodeId = defaultManager.addNode(request.getNode());
 
-            String address = AddressGenerator.generate(defaultManager, clinicManager, pwd);
+            String address = addressGenerator.generate(defaultManager, clinicManager, pwd, Permissions.INIT);
             defaultManager.addAddress(address, nodeId);
             Clinic clinic = request.getData();
             clinic.setId(address);
@@ -96,7 +97,7 @@ public class DoctorAdminService {
         }
     }
 
-    public void assignDoctorToAPatient(String doctorId, String patientId) throws MultichainException, JsonProcessingException, NodeNotFoundException, IOException {
+    public void assignDoctorToAPatient(String doctorId, String patientId) throws MultichainException, NodeNotFoundException, IOException {
         String stream = patientId.substring(0, 31);
         MedChainManager adminManager = new MedChainManager(Utils.context().getNode());
 

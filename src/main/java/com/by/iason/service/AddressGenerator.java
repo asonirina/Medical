@@ -2,8 +2,8 @@ package com.by.iason.service;
 
 import com.by.iason.crypto.MessageEncoder;
 import com.by.iason.crypto.PKManager;
-import com.by.iason.model.Permissions;
 import multichain.command.MultichainException;
+import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
@@ -14,12 +14,14 @@ import java.security.KeyPair;
  * Created by iason
  * on 10/17/2017.
  */
+
+@Component
 public class AddressGenerator {
 
-    public static String generate(MedChainManager defaultManager, MedChainManager manager, String pwd) throws MultichainException, GeneralSecurityException, UnsupportedEncodingException {
+    public String generate(MedChainManager defaultManager, MedChainManager manager, String pwd, int[] permissions) throws MultichainException, GeneralSecurityException, UnsupportedEncodingException {
 
         String address = manager.newAddress();
-        defaultManager.grantPermissions(address, Permissions.INIT);
+        defaultManager.grantPermissions(address, permissions);
         KeyPair keyPair = new PKManager().generateKeyPair();
         manager.addPublicKey(address, keyPair.getPublic().getEncoded());
 

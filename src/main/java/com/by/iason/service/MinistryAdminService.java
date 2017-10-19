@@ -11,6 +11,7 @@ import com.by.iason.model.response.AdminResponse;
 import com.by.iason.model.response.ClinicResponse;
 import com.google.common.collect.Lists;
 import multichain.command.MultichainException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,6 +24,9 @@ import static com.by.iason.model.Streams.*;
  */
 @Component
 public class MinistryAdminService {
+
+    @Autowired
+    private AddressGenerator addressGenerator;
 
     public void approveClinic(String clinicId) throws MultichainException, ClinicNotFoundException {
         MedChainManager manager = new MedChainManager(Utils.context().getNode());
@@ -54,9 +58,7 @@ public class MinistryAdminService {
         MedChainManager defaultManager = new MedChainManager(BlockChain.defaultNode());
         try {
             adminManager.subscribeTo(NODES, ADDRESSES, CLINICS, DOCTORS, PATIENTS, ADMINS, PRIVATE_KEYS, PUBLIC_KEYS, ACCESS);
-            String address = AddressGenerator.generate(defaultManager, adminManager, pwd);
-
-            defaultManager.grantPermissions(address, Permissions.MINISTRY_ADMIN);
+            String address = addressGenerator.generate(defaultManager, adminManager, pwd, Permissions.MINISTRY_ADMIN);
 
             Admin admin = request.getData();
             admin.setId(address);
