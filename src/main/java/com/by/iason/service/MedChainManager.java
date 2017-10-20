@@ -54,6 +54,10 @@ public class MedChainManager {
         cmd.getStreamCommand().publish(ADDRESSES, address, HexBin.encode(nodeId.getBytes()));
     }
 
+    public String get1stAddress() throws MultichainException {
+        return cmd.getAddressCommand().getAddresses().get(0);
+    }
+
     public void addDoctor(Doctor doctor) throws MultichainException {
         cmd.getStreamCommand().publish(DOCTORS, doctor.getId(), HexBin.encode(doctor.getName().getBytes()));
     }

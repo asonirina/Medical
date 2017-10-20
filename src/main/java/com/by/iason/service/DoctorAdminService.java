@@ -80,6 +80,7 @@ public class DoctorAdminService {
         MedChainManager defaultManager = new MedChainManager(BlockChain.defaultNode());
         MedChainManager clinicManager = new MedChainManager(request.getNode());
         try {
+            defaultManager.grantPermissions(clinicManager.get1stAddress(), Permissions.INIT);
             clinicManager.subscribeTo(NODES, ADDRESSES, CLINICS, DOCTORS, PATIENTS, PRIVATE_KEYS, PUBLIC_KEYS, ACCESS);
 
             String nodeId = defaultManager.addNode(request.getNode());

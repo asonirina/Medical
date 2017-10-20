@@ -23,10 +23,10 @@ public class AddressGenerator {
         String address = manager.newAddress();
         defaultManager.grantPermissions(address, permissions);
         KeyPair keyPair = new PKManager().generateKeyPair();
-        manager.addPublicKey(address, keyPair.getPublic().getEncoded());
+        defaultManager.addPublicKey(address, keyPair.getPublic().getEncoded());
 
         String privateKey = new MessageEncoder(pwd).encodeByte(keyPair.getPrivate().getEncoded());
-        manager.addPrivateKey(address, privateKey.getBytes("UTF-8"));
+        defaultManager.addPrivateKey(address, privateKey.getBytes("UTF-8"));
 
         return address;
 
