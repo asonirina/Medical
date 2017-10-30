@@ -26,6 +26,25 @@
 		<commons-collections4.version>4.1</commons-collections4.version>
 	</properties>
 
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<env>local</env>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+			</properties>
+		</profile>
+	</profiles>
+
 
 	<dependencies>
 
@@ -134,6 +153,20 @@
 
 	</dependencies>
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>filters/**</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<filters>
+			<filter>src/main/resources/filters/${env}.properties</filter>
+		</filters>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

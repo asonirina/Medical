@@ -36,9 +36,9 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Cool Admin\"\r\n  },\r\n  \"node\": {\r\n    \"rpcHost\": \"91.204.13.9\",\r\n    \"rpcPort\": \"1111\",\r\n    \"rpcPwd\": \"root\",\r\n    \"rpcUser\": \"multichainrpc\"\r\n  }\r\n}"
+					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Cool Admin\"\r\n  },\r\n  \"node\": {\r\n    \"rpcHost\": \"{{rpcHost}}\",\r\n    \"rpcPort\": \"1111\",\r\n    \"rpcPwd\": \"root\",\r\n    \"rpcUser\": \"multichainrpc\"\r\n  }\r\n}"
 				},
-				"description": ""
+				"description": "Creates new address with all permissions (admin, send, receive, connect, mine, activate, issue, create).\n\nThis address will represent ministry admin of the system.\n\nMinistry admin can manage clinics and employers, create streams."
 			},
 			"response": []
 		},
@@ -71,9 +71,9 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Cool Doctor Admin\"\r\n  },\r\n  \"node\": {\r\n    \"rpcHost\": \"192.168.13.92\",\r\n    \"rpcPort\": \"2221\",\r\n    \"rpcPwd\": \"root\",\r\n    \"rpcUser\": \"multichainrpc\"\r\n  }\r\n}"
+					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Cool Doctor Admin\"\r\n  },\r\n  \"node\": {\r\n    \"rpcHost\": \"{{rpcHost}}\",\r\n    \"rpcPort\": \"2221\",\r\n    \"rpcPwd\": \"root\",\r\n    \"rpcUser\": \"multichainrpc\"\r\n  }\r\n}"
 				},
-				"description": ""
+				"description": "Creates new address associated with clinic with no permissions.\n\nMinistry Admin will ahve to approve this address as new clinic and grant some permissions.\n\nThis address will represent clinic itself and clinic admin (Doctor Admin).\n\nDoctor admin can manage doctors and patients."
 			},
 			"response": []
 		},
@@ -123,7 +123,7 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"description": "Grants permissions to the address created at the previous step to be a Doctor Admin.\n\nThis address will have the following permissions: (connect, send, receive, activate, create, mine)."
 			},
 			"response": []
 		},
@@ -153,7 +153,7 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"description": "Returns list of all clinics in the system."
 			},
 			"response": []
 		},
@@ -198,7 +198,7 @@
 					"mode": "raw",
 					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Doctor\"\r\n  }\r\n}"
 				},
-				"description": ""
+				"description": "Creates new address associated with doctor.\n\nGrants the following permissions to the address: (connect, send, receive)."
 			},
 			"response": []
 		},
@@ -243,7 +243,7 @@
 					"mode": "raw",
 					"raw": "{\r\n  \"data\": {\r\n    \"name\": \"Patient\"\r\n  }\r\n}"
 				},
-				"description": ""
+				"description": "Creates new address associated with a patient.\n\nGrants the following permissions to the address: (connect, send, receive)."
 			},
 			"response": []
 		},
@@ -299,7 +299,7 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"description": "Assigns a doctor to a patient to permit doctor to edit patient's data."
 			},
 			"response": []
 		},
@@ -348,7 +348,7 @@
 					"mode": "raw",
 					"raw": "{\r\n  \"data\": {\r\n    \"data\": \"Secret Data 12345\"\r\n  }\r\n}"
 				},
-				"description": ""
+				"description": "Add new record to the patient's stream."
 			},
 			"response": []
 		},
@@ -390,7 +390,7 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"description": "Returns the list of patient's records.\n\nAll the info is hidden here, only ids are available.\n\nTo read particular decoded record use the next request."
 			},
 			"response": []
 		},
@@ -420,7 +420,7 @@
 					"mode": "raw",
 					"raw": ""
 				},
-				"description": ""
+				"description": "Read particular record by id."
 			},
 			"response": []
 		}
